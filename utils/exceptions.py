@@ -1,11 +1,15 @@
-def InvalidCheckOutDate(Exception):
-    return "Invalid check-out date."
+class InvalidCheckOutDate(Exception):
+    def __init__(self):
+        super().__init__("Check-out date must be after check-in date.")
 
-def InvalidNumberOfGuests(Exception):
-    return "Invalid number of guests."
+class InvalidNumberOfGuests(Exception):
+    def __init__(self):
+        super().__init__("Number of guests must be at least 1.")
 
-def RoomAlreadyBookedException(Exception):
-    return "Room already booked for the given dates."
+class RoomAlreadyBookedException(Exception):
+    def __init__(self):
+        super().__init__("Room is already booked for the selected dates.")
 
 def ReservationNotFoundException(Exception):
-    return "Reservation not found."
+    def __init__(self):
+        super().__init__("Reservation not found.")

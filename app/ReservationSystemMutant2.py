@@ -1,10 +1,10 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from utils.exceptions import *
 from utils.response import ok_response
 
 
-class ReservationSystem:
+class ReservationSystemMutant2:
     def __init__(self):
         self.reservations = {}
         self.next_id = 1
@@ -13,7 +13,9 @@ class ReservationSystem:
         check_in_date = datetime.strptime(check_in, "%Y-%m-%d")
         check_out_date = datetime.strptime(check_out, "%Y-%m-%d")
 
-        if check_out_date <= check_in_date:
+        if guests == 1 and check_out_date - check_in_date < timedelta(days=2):
+            raise InvalidCheckOutDate
+        elif check_out_date - check_in_date < timedelta(days=1):
             raise InvalidCheckOutDate
         if guests < 1:
             raise InvalidNumberOfGuests

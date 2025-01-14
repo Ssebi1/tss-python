@@ -1,10 +1,10 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from utils.exceptions import *
 from utils.response import ok_response
 
 
-class ReservationSystem:
+class ReservationSystemMutant3:
     def __init__(self):
         self.reservations = {}
         self.next_id = 1
@@ -19,11 +19,25 @@ class ReservationSystem:
             raise InvalidNumberOfGuests
 
         # check overlapping reservations
-        for res in self.reservations.values():
-            if res["room_number"] == room_number and not (
-                    check_out_date <= res["check_in"] or check_in_date >= res["check_out"]
-            ):
-                raise RoomAlreadyBookedException
+        room_reservations = [res for res in self.reservations.values() if res["room_number"] == room_number]
+        is_room_booked = any(
+            not (check_out_date <= res["check_in"] or check_in_date >= res["check_out"]) for res in room_reservations)
+        if is_room_booked:
+            # find free slots for this room
+            free_slots = []
+
+            # order reservations by check_in date
+            room_reservations.sort(key=lambda x: x["check_in"])
+
+            start_date = datetime.strptime("2021-01-01", "%Y-%m-%d")
+            for res in room_reservations:
+                if start_date < res["check_in"]:
+                    free_slots.append({"check_in": start_date, "check_out": res["check_in"] - timedelta(days=1)})
+                start_date = res["check_out"] + timedelta(days=1)
+
+            print(free_slots)
+
+            raise RoomAlreadyBookedException
 
         reservation_id = self.next_id
         self.reservations[reservation_id] = {
