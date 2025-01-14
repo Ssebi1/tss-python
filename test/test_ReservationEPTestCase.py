@@ -28,4 +28,3 @@ class ReservationEPTestCase(unittest.TestCase):
         self.reservation_system.add_reservation(**self.test_data["valid"])
         with self.assertRaises(RoomAlreadyBookedException):
             self.reservation_system.add_reservation(**self.test_data["room_occupied"])
-

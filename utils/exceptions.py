@@ -10,6 +10,6 @@ class RoomAlreadyBookedException(Exception):
     def __init__(self):
         super().__init__("Room is already booked for the selected dates.")
 
-def ReservationNotFoundException(Exception):
+class ReservationNotFoundException(Exception):
     def __init__(self):
         super().__init__("Reservation not found.")
